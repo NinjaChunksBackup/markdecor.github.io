@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mark Decor Brochure - Fullscreen</title>
+    <meta name="robots" content="noindex, nofollow">
+    
+    <!-- GOOGLE FONTS (Optional for consistency, but body font is set) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="/static/images/favicon.png" sizes="32x32"> <!-- Ensure this image exists -->
+
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #222529; /* Dark, neutral background for focus */
+            font-family: 'Open Sans', sans-serif; /* Consistent font */
+        }
+        .brochure-container { /* Renamed from index.html for clarity if needed, but can be same */
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .brochure-wrapper {
+            position: relative;
+            width: 100%; /* Full width of container */
+            height: 100%; /* Full height of container */
+            max-width: 100vw; /* Ensure it doesn't exceed viewport width */
+            max-height: 100vh; /* Ensure it doesn't exceed viewport height */
+            outline: none;
+        }
+        .brochure {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* No shadow needed for full screen, but subtle one can be kept if preferred */
+            /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25); */
+            overflow: hidden;
+            background-color: #1A1C1F; /* Slightly darker placeholder */
+        }
+        .brochure-page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures whole page is visible, letterboxing if needed */
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .brochure-page.active {
+            opacity: 1;
+        }
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(20, 20, 20, 0.65);
+            border: none;
+            font-size: 2.5rem; /* Slightly larger for full screen */
+            color: #fff;
+            cursor: pointer;
+            padding: 1.2rem 0.8rem; /* Adjusted padding */
+            transition: background-color 0.3s ease, opacity 0.3s ease;
+            z-index: 10;
+            line-height: 1;
+            opacity: 0.7;
+        }
+        .nav-button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            opacity: 1;
+        }
+        .nav-button.prev {
+            left: 15px;
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+        .nav-button.next {
+            right: 15px;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+        .page-number {
+            position: absolute;
+            bottom: 1.5rem; /* Slightly more space from bottom */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(20, 20, 20, 0.75);
+            color: #fff;
+            padding: 0.6rem 1.2rem; /* Adjusted padding */
+            border-radius: 20px; /* Pill shape */
+            font-size: 0.9rem;
+            font-family: 'Open Sans', sans-serif;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .dot-navigation {
+            display: none; 
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            white-space: nowrap;
+            overflow-x: auto; 
+            max-width: 80%; /* Max width for dot container */
+            padding: 0.5rem; /* Padding around dots */
+            z-index: 10;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+        .dot {
+            display: inline-block;
+            width: 10px; /* Standard dot size */
+            height: 10px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.35);
+            margin: 0 6px; /* Spacing between dots */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .dot.active {
+            background-color: #fff;
+            transform: scale(1.3); /* Slightly more prominent active dot */
+        }
+        @media (max-width: 768px) { /* Mobile specific for brochure controls */
+            .nav-button, .page-number {
+                display: none; /* Hide desktop nav controls */
+            }
+            .dot-navigation {
+                display: block; /* Show dot navigation on mobile */
+            }
+            .nav-button { /* Make buttons smaller on very small screens if still visible */
+                font-size: 2rem;
+                padding: 1rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="brochure-container">
+        <div class="brochure-wrapper" tabindex="0"> <!-- tabindex for keyboard focus -->
+            <div class="brochure">
+                <!-- Initial page will be loaded by JS -->
+            </div>
+            <button class="nav-button prev" aria-label="Previous page"><</button>
+            <button class="nav-button next" aria-label="Next page">></button>
+            <div class="page-number">1 / 34</div>
+            <div class="dot-navigation"></div>
+        </div>
+    </div>
+
+    <script>
+    // Script is very similar to index.html, with minor adjustments if needed for full page context
+    document.addEventListener('DOMContentLoaded', function() {
+        const brochure = document.querySelector('.brochure');
+        const brochureWrapper = document.querySelector('.brochure-wrapper');
+        const prevButton = document.querySelector('.nav-button.prev');
+        const nextButton = document.querySelector('.nav-button.next');
+        const pageNumberDisplay = document.querySelector('.page-number');
+        const dotNavigation = document.querySelector('.dot-navigation');
+        
+        let currentPage = 1;
+        let totalPages = 34; 
+        let isMobile = window.innerWidth <= 768;
+        let dots = [];
+        const brochureImageRoot = '/static/brochure_images/';
+
+        function updateTotalPages() {
+            totalPages = isMobile ? 34 : 35; // MARKDECORSMALL has 34, MARKDECORWIDE has 35
+            if (pageNumberDisplay) pageNumberDisplay.textContent = `${currentPage} / ${totalPages}`;
+        }
+
+        function createDots() {
+            if (!dotNavigation) return;
+            dotNavigation.innerHTML = ''; // Clear existing dots
+            dots = [];
+            for (let i = 0; i < totalPages; i++) {
+                const dot = document.createElement('span');
+                dot.classList.add('dot');
+                dot.dataset.page = i + 1;
+                dot.addEventListener('click', () => goToPage(i + 1));
+                dotNavigation.appendChild(dot);
+                dots.push(dot);
+            }
+            updateActiveDot();
+        }
+
+        function updateActiveDot() {
+            if (!dots.length) return;
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentPage - 1);
+            });
+            // Center active dot in scroll view for mobile
+            if (isMobile && dotNavigation && dots[currentPage - 1]) {
+                const activeDot = dots[currentPage - 1];
+                const scrollLeft = activeDot.offsetLeft - (dotNavigation.offsetWidth / 2) + (activeDot.offsetWidth / 2);
+                dotNavigation.scrollTo({
+                    left: scrollLeft,
+                    behavior: 'smooth'
+                });
+            }
+        }
+        
+        function goToPage(page) {
+            if (page < 1 || page > totalPages) return;
+            currentPage = page;
+            updateBrochure();
+        }
+
+        function updateBrochure() {
+            if (!brochure) return;
+
+            const oldActiveImg = brochure.querySelector('.brochure-page.active');
+            if (oldActiveImg) {
+                oldActiveImg.classList.remove('active');
+            }
+            
+            let newImg = brochure.querySelector(`img[data-page-num="${currentPage}"]`);
+            if (!newImg) {
+                newImg = document.createElement('img');
+                newImg.dataset.pageNum = currentPage;
+                const folder = isMobile ? 'MARKDECORSMALL' : 'MARKDECORWIDE';
+                newImg.src = `${brochureImageRoot}${folder}/${currentPage}.png`;
+                newImg.alt = `Mark Decor Brochure Page ${currentPage}`;
+                newImg.classList.add('brochure-page');
+                brochure.appendChild(newImg);
+                preloadImages(currentPage, folder);
+            }
+            
+            setTimeout(() => {
+                if (newImg) newImg.classList.add('active');
+            }, 50);
+            
+            if (pageNumberDisplay) pageNumberDisplay.textContent = `${currentPage} / ${totalPages}`;
+            updateActiveDot();
+        }
+
+        function preloadImages(page, folder) {
+            if (page < totalPages) {
+                if (!brochure.querySelector(`img[data-page-num="${page + 1}"]`)) {
+                    const nextImg = new Image();
+                    nextImg.src = `${brochureImageRoot}${folder}/${page + 1}.png`;
+                }
+            }
+            if (page > 1) {
+                 if (!brochure.querySelector(`img[data-page-num="${page - 1}"]`)) {
+                    const prevImg = new Image();
+                    prevImg.src = `${brochureImageRoot}${folder}/${page - 1}.png`;
+                }
+            }
+        }
+
+        function nextPage(e) {
+            if (e) e.preventDefault();
+            if (currentPage < totalPages) {
+                currentPage++;
+                updateBrochure();
+            }
+        }
+
+        function prevPage(e) {
+            if (e) e.preventDefault();
+            if (currentPage > 1) {
+                currentPage--;
+                updateBrochure();
+            }
+        }
+
+        if (nextButton) nextButton.addEventListener('click', nextPage);
+        if (prevButton) prevButton.addEventListener('click', prevPage);
+        
+        brochureWrapper.focus(); // Focus for keyboard nav on load
+
+        function handleKeyDown(e) {
+            // Check if focused element is body or brochureWrapper itself
+            if (document.activeElement === document.body || document.activeElement === brochureWrapper) {
+                if (e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    nextPage(null);
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    prevPage(null);
+                }
+            }
+        }
+        document.addEventListener('keydown', handleKeyDown);
+
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        if (brochureWrapper) { // Listen on wrapper for better event scope
+             brochureWrapper.addEventListener('touchstart', e => {
+                touchStartX = e.touches[0].screenX;
+            }, { passive: true });
+
+            brochureWrapper.addEventListener('touchend', e => {
+                touchEndX = e.changedTouches[0].screenX;
+                const swipeDistance = touchEndX - touchStartX;
+                const swipeThreshold = 50;
+                
+                if (Math.abs(swipeDistance) > swipeThreshold) { 
+                    if (swipeDistance < 0) { // Swiped left
+                        nextPage(null);
+                    } else { // Swiped right
+                        prevPage(null);
+                    }
+                }
+            }, { passive: true }); // Not calling preventDefault in swipe
+        }
+
+        function checkDeviceSize() {
+            const newIsMobile = window.innerWidth <= 768;
+            if (newIsMobile !== isMobile) {
+                isMobile = newIsMobile;
+                updateTotalPages();
+                if (currentPage > totalPages) {
+                    currentPage = totalPages;
+                }
+                createDots(); // Recreate dots if total pages changed
+                updateBrochure(); // Update image for new size/folder
+            }
+        }
+        window.addEventListener('resize', checkDeviceSize);
+        
+        // Initial setup
+        checkDeviceSize();
+        // updateTotalPages(); // Called by checkDeviceSize
+        // createDots(); // Called by checkDeviceSize
+        updateBrochure(); // Load initial page
+    });
+    </script>
+</body>
+</html>
