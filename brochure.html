@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mark Decor Brochure - Fullscreen</title>
     <meta name="robots" content="noindex, nofollow">
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&display=swap" rel="stylesheet">
@@ -34,9 +34,9 @@
         }
         .brochure-wrapper { /* Flex container to center the .brochure element */
             position: relative;
-            width: 100%; 
+            width: 100%;
             height: 100%;
-            max-width: 100%; 
+            max-width: 100%;
             max-height: 100%;
             outline: none;
             display: flex;
@@ -44,74 +44,54 @@
             align-items: center;
         }
         .brochure { /* This element will get the aspect ratio */
-            position: relative; 
+            position: relative;
             overflow: hidden;
-            background-color: #1A1C1F; /* Slightly darker placeholder */
-            max-width: 100%; /* Maximize within wrapper */
-            max-height: 100%;/* Maximize within wrapper */
-            /* Transitions for size changes, can be smooth */
-            /* transition: width 0.3s ease, height 0.3s ease; */
+            background-color: transparent; /* CHANGED */
+            max-width: 100%;
+            max-height: 100%;
         }
 
-        /* WIDE (Default or explicit class) */
+        /* WIDE */
         .brochure.wide-view {
-            width: 100%; /* Fill available space of parent (.brochure-wrapper) */
+            aspect-ratio: 2201 / 1033; /* UPDATED based on your dimensions */
+            width: auto;
             height: 100%;
-            /* For wide, we let object-fit:contain handle the image's own aspect ratio within this box */
+            max-width: 100%;
+        }
+        @media (orientation: landscape) and (max-aspect-ratio: 2201/1033) { /* UPDATED */
+            .brochure.wide-view {
+                 width: 100%;
+                 height: auto;
+            }
         }
 
-        /* MEDIUM devices: 4:3 aspect ratio */
+        /* MEDIUM devices */
         .brochure.medium-view {
-            aspect-ratio: 4 / 3;
-            width: auto;  /* Width will be determined by height and aspect-ratio */
-            height: 100%; /* Take full height of parent, width adjusts */
-            /* If width becomes the limiting factor: */
-            /* max-width: 100%; */
-            /* height: auto; */
+            aspect-ratio: 2001 / 1415; /* UPDATED based on your dimensions */
+            width: auto;
+            height: 100%;
+            max-width: 100%;
         }
-        @media (orientation: landscape) and (max-aspect-ratio: 4/3) {
+        @media (orientation: landscape) and (max-aspect-ratio: 2001/1415) { /* UPDATED */
             .brochure.medium-view {
                  width: 100%;
                  height: auto;
             }
         }
 
-
         /* SMALL devices: 9:16 aspect ratio */
         .brochure.small-view {
-            aspect-ratio: 9 / 16;
-            width: auto; /* Width determined by height and aspect-ratio */
-            height: 100%;/* Take full height of parent, width adjusts */
+            aspect-ratio: 1440 / 2560; /* This is 9 / 16, kept for clarity */
+            width: auto;
+            height: 100%;
+            max-width: 100%;
         }
-         /* If in landscape on small device, or viewport aspect ratio is wider than 9:16 */
-        @media (orientation: landscape) and (max-aspect-ratio: 9/16) {
+        @media (orientation: landscape) and (max-aspect-ratio: 1440/2560) { /* UPDATED */
              .brochure.small-view {
-                 width: 100%; /* Take full width, height adjusts */
+                 width: 100%;
                  height: auto;
             }
         }
-        /* Fallback for very wide but short screens where height is constrained */
-        @media (min-aspect-ratio: 1/1) { /* When width is greater than or equal to height */
-            .brochure.small-view { /* If it's small category but landscape-ish */
-                width: auto;
-                height: 100%;
-            }
-             .brochure.medium-view {
-                width: auto;
-                height: 100%;
-            }
-        }
-        @media (max-aspect-ratio: 1/1) { /* When height is greater than width (portrait-ish) */
-             .brochure.small-view {
-                width: 100%; /* For portrait, allow width to fill then height adjust by aspect */
-                height: auto;
-            }
-             .brochure.medium-view { /* For medium, generally width will be more constrained in portrait */
-                width: 100%;
-                height: auto;
-            }
-        }
-
 
         .brochure-page {
             position: absolute;
@@ -119,7 +99,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            object-fit: contain; /* Ensures whole page is visible, letterboxing if needed */
+            object-fit: contain;
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
         }
@@ -132,10 +112,10 @@
             transform: translateY(-50%);
             background-color: rgba(20, 20, 20, 0.65);
             border: none;
-            font-size: 2.5rem; /* Slightly larger for full screen */
+            font-size: 2.5rem;
             color: #fff;
             cursor: pointer;
-            padding: 1.2rem 0.8rem; /* Adjusted padding */
+            padding: 1.2rem 0.8rem;
             transition: background-color 0.3s ease, opacity 0.3s ease;
             z-index: 10;
             line-height: 1;
@@ -157,13 +137,13 @@
         }
         .page-number {
             position: absolute;
-            bottom: 1.5rem; /* Slightly more space from bottom */
+            bottom: 1.5rem;
             left: 50%;
             transform: translateX(-50%);
             background-color: rgba(20, 20, 20, 0.75);
             color: #fff;
-            padding: 0.6rem 1.2rem; /* Adjusted padding */
-            border-radius: 20px; /* Pill shape */
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
             font-size: 0.9rem;
             font-family: 'Open Sans', sans-serif;
             z-index: 10;
@@ -171,49 +151,43 @@
         }
 
         .dot-navigation {
-            display: none; 
+            display: none;
             position: absolute;
             bottom: 1.5rem;
             left: 50%;
             transform: translateX(-50%);
             white-space: nowrap;
-            overflow-x: auto; 
-            max-width: 80%; /* Max width for dot container */
-            padding: 0.5rem; /* Padding around dots */
+            overflow-x: auto;
+            max-width: 80%;
+            padding: 0.5rem;
             z-index: 10;
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            -webkit-overflow-scrolling: touch;
         }
         .dot {
             display: inline-block;
-            width: 10px; /* Standard dot size */
+            width: 10px;
             height: 10px;
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.35);
-            margin: 0 6px; /* Spacing between dots */
+            margin: 0 6px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
         .dot.active {
             background-color: #fff;
-            transform: scale(1.3); /* Slightly more prominent active dot */
+            transform: scale(1.3);
         }
-        
-        /* Show/hide controls based on determined deviceCategory in JS, but media queries are a good fallback/default */
+
+        /* --- Fallback CSS (if JS fails or for initial render) --- */
         /* Small screens (typically SMALL category) */
         @media (max-width: 768px) {
-            .nav-button, .page-number {
-                display: none; 
+            .nav-button, .page-number { display: none; }
+            .dot-navigation { display: block; }
+            .brochure:not(.medium-view):not(.wide-view) {
+                aspect-ratio: 1440 / 2560; /* Match SMALL */
+                width: auto; height: 100%; max-width: 100%;
             }
-            .dot-navigation {
-                display: block; 
-            }
-            /* Adjust aspect ratio application for small screens if needed directly in CSS,
-               though JS will handle primary class switching. This ensures if JS fails, it's still reasonable. */
-            .brochure:not(.medium-view):not(.wide-view) { /* If no specific class, assume small logic for small screens */
-                aspect-ratio: 9 / 16;
-                width: auto; height: 100%;
-            }
-            @media (orientation: landscape) and (max-aspect-ratio: 9/16) {
+            @media (orientation: landscape) and (max-aspect-ratio: 1440/2560) {
                  .brochure:not(.medium-view):not(.wide-view) {
                      width: 100%; height: auto;
                 }
@@ -221,15 +195,12 @@
         }
         /* Medium screens (typically MEDIUM category) */
         @media (min-width: 769px) and (max-width: 1024px) {
-            /* Nav buttons and page number are visible by default from base styles */
-            .dot-navigation {
-                display: none; /* Hide dots if buttons are shown */
-            }
+            .dot-navigation { display: none; }
             .brochure:not(.small-view):not(.wide-view) {
-                aspect-ratio: 4 / 3;
-                 width: auto; height: 100%;
+                aspect-ratio: 2001 / 1415; /* Match MEDIUM */
+                 width: auto; height: 100%; max-width: 100%;
             }
-            @media (orientation: landscape) and (max-aspect-ratio: 4/3) {
+            @media (orientation: landscape) and (max-aspect-ratio: 2001/1415) {
                 .brochure:not(.small-view):not(.wide-view) {
                      width: 100%; height: auto;
                 }
@@ -237,11 +208,15 @@
         }
         /* Large screens (typically WIDE category) */
         @media (min-width: 1025px) {
-            .dot-navigation {
-                display: none;
-            }
+            .dot-navigation { display: none; }
              .brochure:not(.small-view):not(.medium-view) {
-                width: 100%; height: 100%; /* No specific aspect-ratio, fill container */
+                aspect-ratio: 2201 / 1033; /* Match WIDE */
+                width: auto; height: 100%; max-width: 100%;
+            }
+            @media (orientation: landscape) and (max-aspect-ratio: 2201/1033) {
+                .brochure:not(.small-view):not(.medium-view) {
+                     width: 100%; height: auto;
+                }
             }
         }
 
@@ -268,7 +243,7 @@
         const nextButton = document.querySelector('.nav-button.next');
         const pageNumberDisplay = document.querySelector('.page-number');
         const dotNavigation = document.querySelector('.dot-navigation');
-        
+
         let currentPage = 1;
         let totalPages;
         let currentFolder;
@@ -292,11 +267,11 @@
 
         function updateBrochureState() {
             const newDeviceCategory = getDeviceCategory();
-            
+
             if (newDeviceCategory === deviceCategory && deviceCategory !== undefined) {
                 return false; // No change in category
             }
-            
+
             deviceCategory = newDeviceCategory;
             const config = PAGE_CONFIG[deviceCategory];
             totalPages = config.count;
@@ -318,7 +293,7 @@
                 if(pageNumberDisplay) pageNumberDisplay.style.display = 'block';
                 if(dotNavigation) dotNavigation.style.display = 'none';
             }
-            
+
             if (pageNumberDisplay) pageNumberDisplay.textContent = `${currentPage} / ${totalPages}`;
             return true; // State changed
         }
@@ -352,7 +327,7 @@
                 });
             }
         }
-        
+
         function goToPage(page) {
             if (page < 1) page = 1;
             if (page > totalPages) page = totalPages;
@@ -367,11 +342,11 @@
             if (oldActiveImg) {
                 oldActiveImg.classList.remove('active');
             }
-            
+
             let newImg = brochureDiv.querySelector(`img[data-page-num="${currentPage}"]`);
             // If image exists but is from wrong folder (due to resize), remove all and reload
             if (newImg && newImg.src.indexOf(`/${currentFolder}/`) === -1) {
-                brochureDiv.innerHTML = ''; 
+                brochureDiv.innerHTML = '';
                 newImg = null;
             }
 
@@ -385,11 +360,11 @@
                 // Preload next and previous
                 preloadImages(currentPage, currentFolder);
             }
-            
+
             setTimeout(() => { // Ensure class is added after element is in DOM for transition
                 if (newImg) newImg.classList.add('active');
             }, 50); // Small delay
-            
+
             if (pageNumberDisplay) pageNumberDisplay.textContent = `${currentPage} / ${totalPages}`;
             updateActiveDot();
         }
@@ -429,7 +404,7 @@
 
         if (nextButton) nextButton.addEventListener('click', nextPage);
         if (prevButton) prevButton.addEventListener('click', prevPage);
-        
+
         brochureWrapper.focus(); // Focus for keyboard nav on load
 
         function handleKeyDown(e) {
@@ -448,8 +423,8 @@
 
         let touchStartX = 0;
         let touchEndX = 0;
-        
-        if (brochureWrapper) { 
+
+        if (brochureWrapper) {
              brochureWrapper.addEventListener('touchstart', e => {
                 touchStartX = e.touches[0].screenX;
             }, { passive: true });
@@ -458,8 +433,8 @@
                 touchEndX = e.changedTouches[0].screenX;
                 const swipeDistance = touchEndX - touchStartX;
                 const swipeThreshold = 50; // Minimum swipe distance
-                
-                if (Math.abs(swipeDistance) > swipeThreshold) { 
+
+                if (Math.abs(swipeDistance) > swipeThreshold) {
                     if (swipeDistance < 0) { // Swiped left
                         nextPage(null);
                     } else { // Swiped right
@@ -486,7 +461,7 @@
             }
         }
         window.addEventListener('resize', handleResize);
-        
+
         // Initial setup
         updateBrochureState(); // Determine initial category, folder, total pages, and CSS class, controls visibility
         createDots();
