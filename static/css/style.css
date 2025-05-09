@@ -113,11 +113,28 @@ img {
     color: var(--primary-color);
 }
 
-.site-header .contact-nav i {
+.site-header .contact-nav a i {
     margin-right: 8px;
     font-size: 1.1em; 
     color: var(--primary-color);
 }
+
+/* Hamburger Menu Styles */
+.hamburger-menu {
+    display: none; /* Hidden on desktop by default */
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--dark-text);
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    z-index: 1005; 
+    order: 3; /* To ensure it comes after logo if flex order is manipulated later */
+}
+.hamburger-menu i {
+    display: block; 
+}
+
 
 /* Main Content */
 main {
@@ -328,37 +345,80 @@ hr.footer-separator {
     :root { --header-height: auto; } 
 
     .site-header {
-        /* MODIFICATION: Reduced padding for a shorter header */
         padding: 10px 0; 
+        /* Ensure header height is dynamic if content inside changes height */
+        height: auto; 
+        min-height: 60px; /* Example minimum height */
     }
     .site-header .container {
         flex-direction: row;            
         justify-content: space-between;
-        align-items: center;            
+        align-items: center;  
+        position: relative; /* For absolute positioning of the nav dropdown */          
     }
     .site-header .logo {
         margin-bottom: 0; 
+        /* Ensure logo does not cause unexpected wrapping with hamburger */
+        flex-shrink: 0; 
     }
     .site-header .logo img {
-        /* MODIFICATION: Increased logo height */
         max-height: 48px; 
         margin: 0;        
     }
-    .site-header .contact-nav {
-        flex-direction: column;  
-        align-items: flex-end;   
-    }
-    .site-header .contact-nav a {
-        /* MODIFICATION: Reduced vertical margin to compact the stacked links */
-        margin: 2px 0;      
-        font-size: 0.85rem; /* Slightly smaller font for contact links */
-        margin-left: 0; 
-    }
-    .site-header .contact-nav a i {
-        /* MODIFICATION: Optionally reduce icon size slightly if needed */
-        font-size: 1em; 
+    
+    /* Show Hamburger on mobile */
+    .hamburger-menu {
+        display: block;
     }
 
+    /* Style for the mobile navigation menu (dropdown) */
+    .site-header .contact-nav {
+        display: none; /* Hidden by default */
+        flex-direction: column;
+        align-items: stretch; /* Make links take full width */
+        position: absolute;
+        top: 100%; /* Position below the header container */
+        left: 0;
+        right: 0; /* Make it span full width of the container */
+        width: 100%;
+        background-color: var(--background-light, #fff);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+        padding: 0;
+        z-index: 1000;
+        border-top: 1px solid var(--border-color, #f0f0f0);
+    }
+
+    .site-header .contact-nav.active {
+        display: flex; /* Show when .active class is added by JS */
+    }
+
+    .site-header .contact-nav a {
+        margin: 0; /* Reset desktop margins */
+        font-size: 0.9rem;
+        font-weight: normal;
+        color: var(--dark-text);
+        padding: 12px 20px; /* Padding for touch targets */
+        border-bottom: 1px solid var(--border-color, #f0f0f0);
+        text-align: left;
+        display: flex; 
+        align-items: center;
+    }
+
+    .site-header .contact-nav a:last-child {
+        border-bottom: none;
+    }
+
+    .site-header .contact-nav a:hover {
+        background-color: var(--background-medium, #f8f9fa);
+        color: var(--primary-color);
+    }
+
+    .site-header .contact-nav a i {
+        margin-right: 12px; 
+        font-size: 1.1em;
+        width: 20px; 
+        text-align: center;
+    }
 
     section { padding: 40px 0; }
     section.hero { padding: 50px 0; }
@@ -404,16 +464,18 @@ hr.footer-separator {
     .button { padding: 10px 20px; font-size: 0.9rem; }
 
     .site-header .logo img {
-        /* MODIFICATION: Increased logo height, but slightly less than 768px breakpoint */
         max-height: 42px; 
     }
+    .hamburger-menu {
+        font-size: 1.6rem; /* Slightly smaller hamburger icon */
+    }
     .site-header .contact-nav a {
-        font-size: 0.8rem; /* Further reduction for very small screens */
-        margin: 1px 0; /* Further compacting margins */
+        font-size: 0.85rem; 
+        padding: 10px 15px; 
     }
     .site-header .contact-nav a i {
-        font-size: 0.95em; /* Slightly smaller icons */
-        margin-right: 4px; /* Less space next to icon */
+        margin-right: 10px; 
+        font-size: 1em; 
     }
     .footer-left, .footer-right {
         width: 100%; 
