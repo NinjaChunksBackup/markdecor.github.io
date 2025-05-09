@@ -34,246 +34,178 @@
         }
 
         .brochure-section { 
-            padding-top: 0;
-            padding-bottom: 0;
+            padding-top: 20px; /* Add some padding above the brochure */
+            padding-bottom: 20px; /* Add some padding below */
+            background-color: #f0f0f0; /* Optional: background for the section */
         }
         
-        .brochure-section .brochure-container { 
+        .brochure-section .brochure-container { /* Centers the wrapper */
             width: 100%; 
-            padding: 0;
+            max-width: 1200px; /* Max width for the brochure area */
+            margin: 0 auto;
+            padding: 0 15px; /* Padding on the sides */
+            box-sizing: border-box;
         }
+
         .brochure-section .brochure-wrapper { 
             position: relative;
             width: 100%;
-            padding-top: 70.7%; /* Default aspect ratio for inline (landscape) */
+            /* padding-top: 70.7%; REMOVED - aspect ratio handled by .brochure now */
+            height: 70vh; /* Default height, will be constrained by aspect ratio content */
+            max-height: 600px; /* Max height for inline brochure */
+            min-height: 300px; /* Min height for inline brochure */
             outline: none; 
             background-color: #E9ECEF; 
             overflow: hidden; 
             cursor: pointer; 
-        }
-        .brochure-section .brochure {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%; 
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); 
-            overflow: hidden; 
-            background-color: #333;
-        }
-        .brochure-section .brochure-page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-        .brochure-section .brochure-page.active {
-            opacity: 1;
-        }
-        .brochure-section .nav-button {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(20, 20, 20, 0.65);
-            border: none;
-            font-size: 2rem;
-            color: #fff;
-            cursor: pointer;
-            padding: 0.8rem 0.6rem;
-            transition: background-color 0.3s ease, opacity 0.3s ease;
-            z-index: 10;
-            line-height: 1;
-            opacity: 0.7;
-        }
-        .brochure-section .nav-button:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-            opacity: 1;
-        }
-        .brochure-section .nav-button.prev {
-            left: 10px;
-            border-top-right-radius: 6px;
-            border-bottom-right-radius: 6px;
-        }
-        .brochure-section .nav-button.next {
-            right: 10px;
-            border-top-left-radius: 6px;
-            border-bottom-left-radius: 6px;
-        }
-        .brochure-section .page-number {
-            position: absolute;
-            bottom: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(20, 20, 20, 0.75);
-            color: #fff;
-            padding: 0.5rem 1rem;
-            border-radius: 15px;
-            font-size: 0.85rem;
-            font-family: 'Open Sans', sans-serif;
-            z-index: 10;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        .brochure-section .dot-navigation {
-            display: none; 
-            position: absolute;
-            bottom: 1rem;
-            left: 50%;
-            transform: translateX(-50%);
-            white-space: nowrap;
-            overflow-x: auto;
-            max-width: 80%;
-            padding: 0.4rem;
-            z-index: 10;
-            -webkit-overflow-scrolling: touch;
-        }
-        .brochure-section .dot {
-            display: inline-block;
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.35);
-            margin: 0 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-        .brochure-section .dot.active {
-            background-color: #fff;
-            transform: scale(1.2);
-        }
-
-        @media (min-width: 769px) { /* Desktop view for INLINE brochure (cropping logic) */
-            .brochure-section .brochure-wrapper {
-                padding-top: 44.6025%; 
-            }
-            .brochure-section .brochure { 
-                height: 105.26315%; 
-                top: -5.26315%;     
-            }
-        }
-        /* Controls for INLINE brochure */
-        @media (max-width: 768px) { 
-            .brochure-section .nav-button, .brochure-section .page-number {
-                display: none; /* JS will manage this for inline as well if needed */
-            }
-            .brochure-section .dot-navigation {
-                display: block; /* JS will manage this for inline as well if needed */
-            }
-            /* Reset desktop crop styles for inline on mobile */
-            .brochure-section .brochure {
-                height: 100%;
-                top: 0;
-            }
-            .brochure-section .brochure-wrapper { /* Ensure padding-top is for 9:16 if small-view class applied by JS */
-                 /* padding-top: calc(16/9 * 100%) !important; This is complex with existing structure. JS handles image loading primarily. */
-            }
-        }
-        /* If inline brochure also needs aspect ratio classes, define them here: */
-        /* .brochure-section .brochure.small-view { aspect-ratio: 9 / 16; ... } */
-        /* .brochure-section .brochure.medium-view { aspect-ratio: 4 / 3; ... } */
-
-
-        /* Fullscreen Overlay Styles */
-        #fullscreen-brochure-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(34, 37, 41, 0.97); 
-            z-index: 2000;
-            display: flex; 
-            justify-content: center;
-            align-items: center;
-            padding: 10px; /* Match brochure.html container padding */
-            box-sizing: border-box;
-        }
-
-        #fullscreen-brochure-overlay .brochure-wrapper.fullscreen {
-            width: 100%; /* Takes full width of overlay's padding box */
-            height: 100%;/* Takes full height of overlay's padding box */
-            padding-top: 0; 
-            border-radius: 0;
-            /* background-color: #222529;  Removed, already set by overlay */
-            outline: none;
-            position: relative; /* Keep relative for children */
-            overflow: hidden; 
             display: flex; /* To center the .brochure div */
             justify-content: center;
             align-items: center;
+            border-radius: 8px; /* Optional: rounded corners */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15); /* Softer shadow */
         }
 
-        #fullscreen-brochure-overlay .brochure { 
-            position: relative; /* Changed from absolute for aspect-ratio handling */
-            /* top, left, width, height will be controlled by aspect-ratio classes or fill */
+        .brochure-section .brochure { /* This div gets the aspect ratio */
+            position: relative;
             overflow: hidden; 
-            background-color: #1A1C1F; 
-            max-width: 100%; /* Ensure it doesn't overflow wrapper */
-            max-height: 100%;/* Ensure it doesn't overflow wrapper */
+            background-color: #333;
+            max-width: 100%; /* Constrained by wrapper */
+            max-height: 100%;/* Constrained by wrapper */
+            /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); MOVED to wrapper */
         }
-        
-        /* Aspect Ratio Classes for Fullscreen Brochure */
-        #fullscreen-brochure-overlay .brochure.wide-view {
-            width: 100%;
+
+        /* Aspect Ratio Classes for INLINE Brochure */
+        .brochure-section .brochure.wide-view {
+            /* For wide, images are often landscape. We let object-fit:contain work within available space. */
+            /* Default wide images might be 16:9 or similar. Let image dictate. */
+            width: 100%; 
             height: 100%;
         }
-        #fullscreen-brochure-overlay .brochure.medium-view {
+        .brochure-section .brochure.medium-view {
             aspect-ratio: 4 / 3;
             width: auto; height: 100%; /* Default: height priority */
         }
-        @media (orientation: landscape) and (max-aspect-ratio: 4/3) { /* If landscape but viewport is "thinner" than 4:3 */
-            #fullscreen-brochure-overlay .brochure.medium-view {
-                 width: 100%; height: auto; /* Switch to width priority */
-            }
+        /* If viewport is "thinner" than 4:3, switch to width priority */
+        @media (orientation: landscape) and (max-aspect-ratio: 4/3) {
+            .brochure-section .brochure.medium-view { width: 100%; height: auto; }
         }
-        #fullscreen-brochure-overlay .brochure.small-view {
+        .brochure-section .brochure.small-view {
             aspect-ratio: 9 / 16;
             width: auto; height: 100%; /* Default: height priority */
         }
-        @media (orientation: landscape) and (max-aspect-ratio: 9/16) { /* If landscape but viewport is "thinner" than 9:16 */
-             #fullscreen-brochure-overlay .brochure.small-view {
-                 width: 100%; height: auto; /* Switch to width priority */
-            }
+        /* If viewport is "thinner" than 9:16, switch to width priority */
+        @media (orientation: landscape) and (max-aspect-ratio: 9/16) {
+             .brochure-section .brochure.small-view { width: 100%; height: auto; }
         }
-        /* Fallback for very wide but short screens for small and medium views */
-        @media (min-aspect-ratio: 1/1) { /* When width is greater than or equal to height */
-            #fullscreen-brochure-overlay .brochure.small-view,
-            #fullscreen-brochure-overlay .brochure.medium-view {
-                width: auto; height: 100%;
-            }
+        /* General constraints for portrait/landscape for small/medium views */
+        @media (min-aspect-ratio: 1/1) { /* Viewport is landscape or square */
+            .brochure-section .brochure.small-view,
+            .brochure-section .brochure.medium-view { width: auto; height: 100%; }
         }
-        @media (max-aspect-ratio: 1/1) { /* When height is greater than width (portrait-ish) */
-             #fullscreen-brochure-overlay .brochure.small-view,
-             #fullscreen-brochure-overlay .brochure.medium-view {
-                width: 100%; height: auto;
-            }
+        @media (max-aspect-ratio: 1/1) { /* Viewport is portrait */
+             .brochure-section .brochure.small-view,
+             .brochure-section .brochure.medium-view { width: 100%; height: auto; }
         }
 
 
-        #fullscreen-brochure-overlay .brochure-page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+        .brochure-section .brochure-page {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out;
         }
-        #fullscreen-brochure-overlay .brochure-page.active {
-            opacity: 1;
-        }
+        .brochure-section .brochure-page.active { opacity: 1; }
 
-        /* Nav Controls for Fullscreen - Styles are similar to brochure.html */
-        #fullscreen-brochure-overlay .nav-button {
+        .brochure-section .nav-button {
             position: absolute; top: 50%; transform: translateY(-50%);
-            background-color: rgba(20, 20, 20, 0.65); border: none; font-size: 2.5rem;
-            color: #fff; cursor: pointer; padding: 1.2rem 0.8rem;
+            background-color: rgba(20, 20, 20, 0.65); border: none; font-size: 2rem;
+            color: #fff; cursor: pointer; padding: 0.8rem 0.6rem;
             transition: background-color 0.3s ease, opacity 0.3s ease;
             z-index: 10; line-height: 1; opacity: 0.7;
+        }
+        .brochure-section .nav-button:hover { background-color: rgba(0, 0, 0, 0.8); opacity: 1; }
+        .brochure-section .nav-button.prev { left: 10px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; }
+        .brochure-section .nav-button.next { right: 10px; border-top-left-radius: 6px; border-bottom-left-radius: 6px; }
+        
+        .brochure-section .page-number {
+            position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
+            background-color: rgba(20, 20, 20, 0.75); color: #fff; padding: 0.5rem 1rem;
+            border-radius: 15px; font-size: 0.85rem; font-family: 'Open Sans', sans-serif;
+            z-index: 10; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .brochure-section .dot-navigation {
+            display: none; position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%);
+            white-space: nowrap; overflow-x: auto; max-width: 80%; padding: 0.4rem;
+            z-index: 10; -webkit-overflow-scrolling: touch;
+        }
+        .brochure-section .dot {
+            display: inline-block; width: 9px; height: 9px; border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.35); margin: 0 5px; cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .brochure-section .dot.active { background-color: #fff; transform: scale(1.2); }
+
+        /* Desktop Cropping (OPTIONAL - if you still want a slight crop on WIDE view for inline) */
+        /* This would typically apply to the .wide-view specifically */
+        /*
+        @media (min-width: 1025px) { 
+            .brochure-section .brochure.wide-view {
+                 height: 105.26%; 
+                 top: -2.63%; 
+                 margin-bottom: -2.63%; 
+            }
+        }
+        */
+
+        /* JS will manage controls visibility for inline based on category */
+        /*
+        @media (max-width: 768px) { 
+            .brochure-section .nav-button, .brochure-section .page-number { display: none; }
+            .brochure-section .dot-navigation { display: block; }
+        }
+        */
+
+
+        /* Fullscreen Overlay Styles (largely unchanged from previous version) */
+        #fullscreen-brochure-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(34, 37, 41, 0.97); z-index: 2000;
+            display: flex; justify-content: center; align-items: center;
+            padding: 10px; box-sizing: border-box;
+        }
+        #fullscreen-brochure-overlay .brochure-wrapper.fullscreen {
+            width: 100%; height: 100%; padding-top: 0; border-radius: 0;
+            outline: none; position: relative; overflow: hidden; 
+            display: flex; justify-content: center; align-items: center;
+        }
+        #fullscreen-brochure-overlay .brochure { 
+            position: relative; overflow: hidden; background-color: #1A1C1F; 
+            max-width: 100%; max-height: 100%;
+        }
+        #fullscreen-brochure-overlay .brochure.wide-view { width: 100%; height: 100%; }
+        #fullscreen-brochure-overlay .brochure.medium-view { aspect-ratio: 4 / 3; width: auto; height: 100%; }
+        @media (orientation: landscape) and (max-aspect-ratio: 4/3) {
+            #fullscreen-brochure-overlay .brochure.medium-view { width: 100%; height: auto; }
+        }
+        #fullscreen-brochure-overlay .brochure.small-view { aspect-ratio: 9 / 16; width: auto; height: 100%; }
+        @media (orientation: landscape) and (max-aspect-ratio: 9/16) {
+             #fullscreen-brochure-overlay .brochure.small-view { width: 100%; height: auto; }
+        }
+        @media (min-aspect-ratio: 1/1) {
+            #fullscreen-brochure-overlay .brochure.small-view,
+            #fullscreen-brochure-overlay .brochure.medium-view { width: auto; height: 100%; }
+        }
+        @media (max-aspect-ratio: 1/1) {
+             #fullscreen-brochure-overlay .brochure.small-view,
+             #fullscreen-brochure-overlay .brochure.medium-view { width: 100%; height: auto; }
+        }
+        #fullscreen-brochure-overlay .brochure-page {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: contain; opacity: 0; transition: opacity 0.5s ease-in-out;
+        }
+        #fullscreen-brochure-overlay .brochure-page.active { opacity: 1; }
+        #fullscreen-brochure-overlay .nav-button {
+            position: absolute; top: 50%; transform: translateY(-50%); background-color: rgba(20, 20, 20, 0.65);
+            border: none; font-size: 2.5rem; color: #fff; cursor: pointer; padding: 1.2rem 0.8rem;
+            transition: background-color 0.3s ease, opacity 0.3s ease; z-index: 10; line-height: 1; opacity: 0.7;
         }
         #fullscreen-brochure-overlay .nav-button:hover { background-color: rgba(0, 0, 0, 0.8); opacity: 1; }
         #fullscreen-brochure-overlay .nav-button.prev { left: 15px; border-top-right-radius: 8px; border-bottom-right-radius: 8px;}
@@ -295,20 +227,12 @@
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
         #fullscreen-brochure-overlay .dot.active { background-color: #fff; transform: scale(1.3); }
-
         #close-fullscreen-brochure {
             position: absolute; top: 20px; right: 25px; font-size: 2.5rem; color: white;
             background: transparent; border: none; cursor: pointer; z-index: 15;
             padding: 5px; line-height: 1; text-shadow: 0 0 5px rgba(0,0,0,0.5); 
         }
         #close-fullscreen-brochure:hover { opacity: 0.8; }
-
-        /* JS will handle visibility of these controls based on category for fullscreen */
-        /* @media (max-width: 768px) { 
-            #fullscreen-brochure-overlay .nav-button,
-            #fullscreen-brochure-overlay .page-number { display: none; }
-            #fullscreen-brochure-overlay .dot-navigation { display: block; }
-        } */
     </style>
 </head>
 <body>
@@ -331,7 +255,7 @@
         <section class="brochure-section" id="brochure">
             <div class="brochure-container">
                 <div class="brochure-wrapper" tabindex="0"> 
-                  <div class="brochure"></div>
+                  <div class="brochure"></div> <!-- This div will get aspect ratio classes -->
                   <button class="nav-button prev" aria-label="Previous page"><</button>
                   <button class="nav-button next" aria-label="Next page">></button>
                   <div class="page-number">1 / ?</div>
@@ -381,7 +305,7 @@
 
     <div id="fullscreen-brochure-overlay" style="display: none;">
         <div class="brochure-wrapper fullscreen" tabindex="-1"> 
-            <div class="brochure"></div>
+            <div class="brochure"></div> <!-- This div will get aspect ratio classes -->
             <button class="nav-button prev" aria-label="Previous page"><</button>
             <button class="nav-button next" aria-label="Next page">></button>
             <div class="page-number">1 / ?</div> 
@@ -391,7 +315,6 @@
     </div>
 
     <script>
-    // Shared Page Configuration
     const GLOBAL_PAGE_CONFIG = {
         SMALL: { count: 36, folder: 'MARKDECORSMALL', cssClass: 'small-view' },
         MEDIUM: { count: 34, folder: 'MARKDECORMEDIUM', cssClass: 'medium-view' },
@@ -403,8 +326,8 @@
             containerElement,
             brochureImageRoot,
             initialPage = 1,
-            pageConfig = GLOBAL_PAGE_CONFIG, // Use global config by default
-            isInline = false, // Flag to differentiate behavior if needed
+            pageConfig = GLOBAL_PAGE_CONFIG,
+            // isInline = false, // No longer strictly needed for getDeviceCategoryState if both behave same
             onPageChangeCallback
         } = options;
 
@@ -423,14 +346,9 @@
         let touchStartX = 0;
         let touchEndX = 0;
 
-        function getDeviceCategoryState() {
+        function getDeviceCategoryState() { // Now same for both inline and fullscreen
             const width = window.innerWidth;
             if (width <= 768) return 'SMALL';
-            // For inline, you might decide medium is not distinct from wide, or use different breakpoints
-            // For fullscreen, medium is distinct.
-            if (isInline && width > 768) return 'WIDE'; // Simplified for inline: SMALL or WIDE images
-            
-            // For fullscreen or if isInline needs 3 states:
             if (width <= 1024) return 'MEDIUM';
             return 'WIDE';
         }
@@ -439,11 +357,11 @@
            const newDeviceCategory = getDeviceCategoryState();
             
            if (newDeviceCategory === deviceCategory && deviceCategory !== undefined) {
-               return false; // No change
+               return false; 
            }
 
            deviceCategory = newDeviceCategory;
-           const config = pageConfig[deviceCategory] || pageConfig.WIDE; // Fallback
+           const config = pageConfig[deviceCategory] || pageConfig.WIDE; 
 
            totalPages = config.count;
            currentFolder = config.folder;
@@ -454,7 +372,6 @@
                brochureDiv.classList.add(currentCssClass);
            }
            
-           // Manage controls visibility based on category for THIS instance
            const showDots = (deviceCategory === 'SMALL');
            if (prevButton) prevButton.style.display = showDots ? 'none' : 'block';
            if (nextButton) nextButton.style.display = showDots ? 'none' : 'block';
@@ -463,10 +380,10 @@
            
            if (pageNumberDisplay) pageNumberDisplay.textContent = `${currentPage} / ${totalPages}`;
            containerElement.dataset.deviceCategory = deviceCategory;
-           return true; // State changed
+           return true;
         }
 
-        function createDotsForInstance() { // Renamed to avoid conflict
+        function createDotsForInstance() {
             if (!dotNavigation) return;
             dotNavigation.innerHTML = '';
             dots = [];
@@ -484,7 +401,7 @@
             updateActiveDotForInstance();
         }
 
-        function updateActiveDotForInstance() { // Renamed
+        function updateActiveDotForInstance() {
             if (!dots.length) return;
             dots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === currentPage - 1);
@@ -496,7 +413,7 @@
             }
         }
 
-        function loadBrochureContent() { // Renamed
+        function loadBrochureContent() {
             if (!brochureDiv) return;
 
             if (currentPage > totalPages) currentPage = totalPages;
@@ -519,7 +436,6 @@
                 newImg.classList.add('brochure-page');
                 brochureDiv.appendChild(newImg);
                 
-                // Preload
                 if (currentPage < totalPages) {
                     if (!brochureDiv.querySelector(`img[data-page-num="${currentPage + 1}"][src*="/${currentFolder}/"]`)) {
                         const nextImgPreload = new Image();
@@ -543,18 +459,11 @@
 
         function nextPageHandler(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
-            if (currentPage < totalPages) {
-                currentPage++;
-                loadBrochureContent();
-            }
+            if (currentPage < totalPages) { currentPage++; loadBrochureContent(); }
         }
-
         function prevPageHandler(e) {
             if (e) { e.preventDefault(); e.stopPropagation(); }
-            if (currentPage > 1) {
-                currentPage--;
-                loadBrochureContent();
-            }
+            if (currentPage > 1) { currentPage--; loadBrochureContent(); }
         }
 
         if (nextButton) nextButton.addEventListener('click', nextPageHandler);
@@ -572,10 +481,8 @@
 
         const instance = {
             goToPage: (page) => {
-                if (page < 1) page = 1;
-                if (page > totalPages) page = totalPages;
-                currentPage = page; 
-                loadBrochureContent();
+                if (page < 1) page = 1; if (page > totalPages) page = totalPages;
+                currentPage = page; loadBrochureContent();
             },
             getCurrentPage: () => currentPage,
             updateDisplay: () => { 
@@ -602,8 +509,7 @@
             inlineBrochureInstance = createBrochureInstance({
                 containerElement: inlineBrochureWrapper,
                 brochureImageRoot: '/static/brochure_images/',
-                pageConfig: GLOBAL_PAGE_CONFIG,
-                isInline: true // Specify this is the inline instance
+                pageConfig: GLOBAL_PAGE_CONFIG
             });
             inlineBrochureInstance.updateDisplay(); 
         }
@@ -618,8 +524,7 @@
             fullscreenBrochureInstance = createBrochureInstance({
                 containerElement: fullscreenBrochureWrapper,
                 brochureImageRoot: '/static/brochure_images/',
-                pageConfig: GLOBAL_PAGE_CONFIG,
-                isInline: false
+                pageConfig: GLOBAL_PAGE_CONFIG
             });
         }
 
@@ -629,13 +534,9 @@
             isFullscreenActive = true;
             fullscreenOverlay.style.display = 'flex';
             document.body.style.overflow = 'hidden';
-
             const currentPageFromInline = inlineBrochureInstance.getCurrentPage();
-            // Update display for fullscreen will set its own category, CSS class etc.
             fullscreenBrochureInstance.updateDisplay(); 
-            // Then go to the correct page
             fullscreenBrochureInstance.goToPage(currentPageFromInline); 
-
             fullscreenBrochureWrapper.focus();
         }
 
@@ -654,14 +555,12 @@
             inlineBrochureWrapper.addEventListener('touchend', function(event) {
                 const currentTime = new Date().getTime();
                 if (currentTime - lastTapTime < 300 && currentTime - lastTapTime > 0) { 
-                    event.preventDefault(); 
-                    openFullscreenBrochure();
+                    event.preventDefault(); openFullscreenBrochure();
                 }
                 lastTapTime = currentTime;
             });
             inlineBrochureWrapper.addEventListener('dblclick', function(event) {
-                event.preventDefault();
-                openFullscreenBrochure();
+                event.preventDefault(); openFullscreenBrochure();
             });
         }
 
@@ -685,9 +584,7 @@
         let isInlineBrochureInView = false;
         if (inlineBrochureWrapper) {
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    isInlineBrochureInView = entry.isIntersecting;
-                });
+                entries.forEach(entry => { isInlineBrochureInView = entry.isIntersecting; });
             }, { threshold: 0.1 }); 
             observer.observe(inlineBrochureWrapper);
         }
@@ -698,13 +595,12 @@
                 else if (e.key === 'ArrowLeft') { e.preventDefault(); fullscreenBrochureInstance.prevPage(); }
                 else if (e.key === 'Escape') { e.preventDefault(); closeFullscreenBrochure(); }
             } else if (isInlineBrochureInView && inlineBrochureInstance && 
-                       (document.activeElement === inlineBrochureWrapper || inlineBrochureWrapper.contains(document.activeElement)) ) {
+                       (document.activeElement === inlineBrochureWrapper || (inlineBrochureWrapper && inlineBrochureWrapper.contains(document.activeElement))) ) {
                 if (e.key === 'ArrowRight') { e.preventDefault(); inlineBrochureInstance.nextPage(); }
                 else if (e.key === 'ArrowLeft') { e.preventDefault(); inlineBrochureInstance.prevPage(); }
             }
         });
 
-        // Hamburger Menu Logic
         const hamburgerButton = document.querySelector('.hamburger-menu');
         const contactNav = document.getElementById('contact-nav-links');
         if (hamburgerButton && contactNav) {
